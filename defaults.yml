@@ -1,0 +1,5 @@
+---
+project_dir : ansible_test_run
+url : https://s3.amazonaws.com/ib-noa-prod.csp.infoblox.com/BloxOne_OnPrem_Docker_3.3.6.tar.gz
+file : BloxOne_OnPrem_Docker.tar.gz
+IBcontainername : infobloxcto/inprem.agent

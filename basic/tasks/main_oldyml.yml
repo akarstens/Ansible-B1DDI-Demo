@@ -1,0 +1,36 @@
+- name: "installing docker"
+  apt: pkg=docker state=present
+
+- name: "installing pip"
+  apt: pkg=python-pip state=present
+
+- name: "Install Docker Module for Python"
+  pip:
+   name: docker
+
+- name: "Create project environment"
+  file: 
+   state=directory
+   path={{ project_dir }}
+
+- name: "Download Sources"
+  get_url: url={{ url }} dest={{ project_dir }}/{{ file }}
+
+- name: "Loading tarball into local repository"
+  docker_image:
+    name={{IBcontainername}}
+    load_path={{project_dir}}/{{file}}
+    source=load                        
+    state=present
+  
+- name: "Start InfoBlox container"
+  docker_container:
+    name={{B1Containername}}
+    detach=yes
+    network_mode=host
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/lib/infoblox/certs:/var/lib/infoblox/certs
+     - /etc/onprem.d/:/etc/onprem.d/ 
+    image={{Image}}/{{IBcontainername}}                     
+    state=started
